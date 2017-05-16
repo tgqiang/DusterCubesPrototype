@@ -38,5 +38,22 @@ public class Tile : MonoBehaviour
 			tileRenderer.sprite = initial;
 		}*/
 	}
+
+	public void UpdateTileFromPlayerPosition(float px, float py) {
+		float tX = gameObject.transform.position.x;
+		float tY = gameObject.transform.position.y;
+
+		// if center of player is within tile boundary
+		if ((tX - 0.5f < px && px < tX + 0.5f) &&
+		    (tY - 0.5f < py && py < tY + 0.5f)) {
+			isStepped = true;
+		}
+	}
+
+	public void DestroyTileWithSymbol(int symbolToDestroy) {
+		if (symbol == symbolToDestroy) {
+			isDestroyed = true;
+		}
+	}
 }
 
