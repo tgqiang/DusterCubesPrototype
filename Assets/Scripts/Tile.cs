@@ -38,5 +38,9 @@ public class Tile : MonoBehaviour
 			tileRenderer.sprite = initial;
 		}*/
 	}
+    public void setStepped(bool step)
+    {
+        isStepped = step;
+    }
 }
 
