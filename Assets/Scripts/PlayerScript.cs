@@ -17,7 +17,6 @@ public class PlayerScript : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-		deathText.enabled = false;
     }
 
     // Update is called once per frame
@@ -28,29 +27,45 @@ public class PlayerScript : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (!isDead)
+		if (!isDead && gameManager.numPlayersSurviving > 1)
         {
 			checkTileOn ();
-            if (Input.GetKeyUp(KeyCode.A))
-            {
-                MoveLeft();
-                checkTileOn();
-            }
-            else if (Input.GetKeyUp(KeyCode.D))
-            {
-                MoveRight();
-                checkTileOn();
-            }
-            else if (Input.GetKeyUp(KeyCode.W))
-            {
-                MoveUp();
-                checkTileOn();
-            }
-            else if (Input.GetKeyUp(KeyCode.S))
-            {
-                MoveDown();
-                checkTileOn();
-            }
+			if (id == 1) {
+				if (Input.GetKeyUp (KeyCode.A)) {
+					MoveLeft ();
+					checkTileOn ();
+				} else if (Input.GetKeyUp (KeyCode.D)) {
+					MoveRight ();
+					checkTileOn ();
+				} else if (Input.GetKeyUp (KeyCode.W)) {
+					MoveUp ();
+					checkTileOn ();
+				} else if (Input.GetKeyUp (KeyCode.S)) {
+					MoveDown ();
+					checkTileOn ();
+				}
+			} else if (id == 2) {
+				if (Input.GetKeyUp(KeyCode.LeftArrow))
+				{
+					MoveLeft();
+					checkTileOn();
+				}
+				else if (Input.GetKeyUp(KeyCode.RightArrow))
+				{
+					MoveRight();
+					checkTileOn();
+				}
+				else if (Input.GetKeyUp(KeyCode.UpArrow))
+				{
+					MoveUp();
+					checkTileOn();
+				}
+				else if (Input.GetKeyUp(KeyCode.DownArrow))
+				{
+					MoveDown();
+					checkTileOn();
+				}
+			}
         }
     }
 
@@ -89,8 +104,15 @@ public class PlayerScript : MonoBehaviour
 				if (Tiles [i].GetComponent<Tile> ().isDestroyed) {
 					isDead = true;
 					deathText.text = deathText.text + "\nPlayer " + id + " died.";
-					deathText.enabled = true;
-					gameManager.gameOvers[id - 1] = true;
+					gameManager.numPlayersSurviving -= 1;
+					if (gameManager.numPlayersSurviving <= 0) {
+						gameManager.winText.text = "Game Over.";
+						gameManager.winText.enabled = true;
+					}
+					else if (gameManager.numPlayersSurviving == 1) {
+						gameManager.winText.text = "Game Won!";
+						gameManager.winText.enabled = true;
+					}
 				} else {
 					Tiles [i].GetComponent<Tile> ().isStepped = true;
 				}

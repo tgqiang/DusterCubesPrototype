@@ -11,15 +11,19 @@ public class GameManagerScript : MonoBehaviour {
 	public float roundDuration;			// note: this is in minutes
 
 	public int numPlayers;
+	public int numPlayersSurviving;
 
 	public Text winText;
 	public Text deathText;
+	public Text timeText;
+	public Text warningText;
 
 	bool[] hasBeenAssignedId;
-	int symbolToAssign;
 
 	int triggerTime;
 	bool destroyedEarlier;
+	bool isGenerated;
+	int prevGeneratedSymbol;
 
 	public bool[] gameOvers;
 
@@ -54,34 +58,55 @@ public class GameManagerScript : MonoBehaviour {
 		}
 
 		winText.enabled = false;
+		warningText.enabled = false;
+
+		numPlayersSurviving = numPlayers;
+		prevGeneratedSymbol = -1;
 
 		gameOvers = new bool[numPlayers];
 	}
 	
 	// Update is called once per frame
-	void Update () {
-		timeElapsed += Time.deltaTime;
+	void LateUpdate () {
+		if (numPlayersSurviving > 1) {
+			timeElapsed += Time.deltaTime;
 
-		if (IsGameOver ()) {
-			winText.text = "Game Over.";
-			winText.enabled = true;
-		}
-		// if 3 minutes for a round is up
-		else if (timeElapsed >= (roundDuration * 60f)) {
-			if (!deathText.enabled) {
-				winText.text = "You win!";
-				winText.enabled = true;
-			} else {
-				winText.text = "Game Over.";
-				winText.enabled = true;
+			timeText.text = "Time: " + Mathf.FloorToInt (timeElapsed / 60) + ":" + Mathf.FloorToInt (timeElapsed % 60);
+
+			// if 3 minutes for a round is up
+			if (timeElapsed >= (roundDuration * 60f)) {
+				if (numPlayersSurviving == 1) {
+					winText.text = "Game Won!";
+					winText.enabled = true;
+				} else if (numPlayersSurviving <= 0) {
+					winText.text = "Game Over.";
+					winText.enabled = true;
+				} else {
+					winText.text = "Game Draw~";
+					winText.enabled = true;
+				}
+			} else if (Mathf.FloorToInt (timeElapsed) > 0 && Mathf.FloorToInt (timeElapsed) % 30 == 27 && !isGenerated) {
+				while (symbolToDestroy == prevGeneratedSymbol) {
+					symbolToDestroy = Random.Range (0, 4); // 5 different symbols for now: {0, 1, 2, 3, 4}
+				}
+				isGenerated = true;
+				warningText.text = "Destroying tiles with symbol " + symbolToDestroy + " in 3...";
+				warningText.enabled = true;
+			} else if (Mathf.FloorToInt (timeElapsed) > 0 && Mathf.FloorToInt (timeElapsed) % 30 == 28) {
+				warningText.text = "Destroying tiles with symbol " + symbolToDestroy + " in 2...";
+			} else if (Mathf.FloorToInt (timeElapsed) > 0 && Mathf.FloorToInt (timeElapsed) % 30 == 29) {
+				warningText.text = "Destroying tiles with symbol " + symbolToDestroy + " in 1...";
+				warningText.enabled = true;
+			} else if (Mathf.FloorToInt (timeElapsed) > 0 && Mathf.FloorToInt (timeElapsed) % 30 == 0 && !destroyedEarlier) {
+				warningText.enabled = false;
+				isGenerated = false;
+				DestroyTiles (symbolToDestroy);
+				triggerTime = Mathf.FloorToInt (timeElapsed);
+				destroyedEarlier = true;
+				prevGeneratedSymbol = symbolToDestroy;
+			} else if (Mathf.FloorToInt (timeElapsed) >= (triggerTime + 1)) {
+				destroyedEarlier = false;
 			}
-		} else if (Mathf.FloorToInt (timeElapsed) > 0 && Mathf.FloorToInt (timeElapsed) % 30 == 0 && !destroyedEarlier) {
-			symbolToDestroy = Random.Range (0, 4); // 5 different symbols for now: {0, 1, 2, 3, 4}
-			DestroyTiles (symbolToDestroy);
-			triggerTime = Mathf.FloorToInt (timeElapsed);
-			destroyedEarlier = true;
-		} else if (Mathf.FloorToInt (timeElapsed) >= (triggerTime + 1)) {
-			destroyedEarlier = false;
 		}
 	}
 
@@ -93,11 +118,6 @@ public class GameManagerScript : MonoBehaviour {
 	}
 
 	bool IsGameOver() {
-		for (int i = 0; i < gameOvers.Length; i++) {
-			if (gameOvers [i] == false) {
-				return false;
-			}
-		}
-		return true;
+		return numPlayersSurviving == 1;
 	}
 }

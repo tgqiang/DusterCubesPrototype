@@ -8,10 +8,10 @@ public class Tile : MonoBehaviour
 	public int symbol;			// tile symbol
 
 	public Sprite initial;
-	public Sprite active;
+	public Sprite[] active;
 	public Sprite destroyed;
 
-	private SpriteRenderer tileRenderer;
+	public SpriteRenderer tileRenderer;
 
 	// Use this for initialization
 	void Awake ()
@@ -31,7 +31,7 @@ public class Tile : MonoBehaviour
 			tileRenderer.sprite = destroyed;
 		} else if (isStepped) {
 			// TODO: set tile to white color
-			tileRenderer.sprite = active;
+			tileRenderer.sprite = active[symbol];
 		}
 		// Uncomment this if you want to allow resetting the tile.
 		/*else {
