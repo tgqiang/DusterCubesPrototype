@@ -1,17 +1,23 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerScript : MonoBehaviour
 {
 
     public bool isDead = false;
+	public int id;
     public Transform pb;
     public List<Transform> Tiles;
+	public Text deathText;
+
+	public GameManagerScript gameManager;
+
     // Use this for initialization
     void Start()
     {
-
+		deathText.enabled = false;
     }
 
     // Update is called once per frame
@@ -24,6 +30,7 @@ public class PlayerScript : MonoBehaviour
     {
         if (!isDead)
         {
+			checkTileOn ();
             if (Input.GetKeyUp(KeyCode.A))
             {
                 MoveLeft();
@@ -79,7 +86,14 @@ public class PlayerScript : MonoBehaviour
         {
             if (pb.position.Equals(Tiles[i].position))
             {
-                Tiles[i].GetComponent<Tile>().isStepped = true;
+				if (Tiles [i].GetComponent<Tile> ().isDestroyed) {
+					isDead = true;
+					deathText.text = deathText.text + "\nPlayer " + id + " died.";
+					deathText.enabled = true;
+					gameManager.gameOvers[id - 1] = true;
+				} else {
+					Tiles [i].GetComponent<Tile> ().isStepped = true;
+				}
             }
         }
     }

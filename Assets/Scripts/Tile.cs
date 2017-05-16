@@ -14,13 +14,13 @@ public class Tile : MonoBehaviour
 	private SpriteRenderer tileRenderer;
 
 	// Use this for initialization
-	void Start ()
+	void Awake ()
 	{
 		isStepped = false;
 		isDestroyed = false;
 		tileRenderer = GetComponent<SpriteRenderer> ();
 		tileRenderer.sprite = initial;
-		symbol = Random.Range (0, 5);	// 5 different possible symbols for now: {0, 1, 2, 3, 4}
+		symbol = -1;	// 5 different possible symbols for now: {0, 1, 2, 3, 4}
 	}
 	
 	// Update is called once per frame
