@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -6,118 +7,146 @@ using UnityEngine.UI;
 public class GameManagerScript : MonoBehaviour {
 
 	public float timeElapsed;
-	public Tile[] tiles;
-	public int symbolToDestroy;
 	public float roundDuration;			// note: this is in minutes
 
+	public Tile[] tiles;
+	public Tile[,] map;
+	public int rowsRemaining = 10;		// set this to change # rows
+	public int colsRemaining = 10;		// set this to change # cols
+
+	public GameObject rowWarning;
+	public SpriteRenderer rowWarningRenderer;
+	public Sprite[] rowWarningFrame;
+
+	public GameObject colWarning;
+	public SpriteRenderer colWarningRenderer;
+	public Sprite[] colWarningFrame;
+
 	public int numPlayers;
-	public int numPlayersSurviving;
 
 	public Text winText;
 	public Text deathText;
 	public Text timeText;
-	public Text warningText;
 
-	bool[] hasBeenAssignedId;
+	int toDestroyRow;
+	int rowToDestroy;
+	int colToDestroy;
+	bool isWarned;
 
-	int triggerTime;
+	int destroyTime;
 	bool destroyedEarlier;
-	bool isGenerated;
-	int prevGeneratedSymbol;
-
-	public bool[] gameOvers;
-
-	int[] symbols = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-					  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-					  2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
-					  3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
-					  4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
-				    };
-
-	int[] indices = { 16, 20, 9, 65, 85, 14, 47, 33, 10, 58, 7, 80, 89, 94, 13, 79, 86, 21, 8, 38,
-					  53, 1, 74, 32, 49, 15, 48, 78, 18, 67, 28, 5, 30, 92, 31, 63, 73, 42, 6, 2,
-					  83, 44, 36, 50, 64, 88, 22, 81, 0, 17, 99, 60, 55, 52, 72, 91, 96, 35, 26, 75,
-					  56, 87, 82, 39, 40, 27, 57, 84, 76, 43, 95, 93, 37, 66, 25, 11, 19, 62, 29, 54,
-					  61, 77, 24, 34, 45, 97, 46, 41, 70, 4, 59, 3, 12, 90, 68, 71, 69, 51, 23, 98
-					};
+	bool isGameOver;
 
 	// Use this for initialization
 	void Start () {
 		timeElapsed = 0;
-		symbolToDestroy = -1;
+		winText.enabled = false;
 
+		// Set-up the game tiles
 		GameObject[] tileObjects = GameObject.FindGameObjectsWithTag ("Tile");
 		tiles = new Tile[tileObjects.Length];
 
 		for (int i = 0; i < tileObjects.Length; i++) {
 			tiles [i] = tileObjects [i].GetComponent<Tile> ();
 		}
+		Array.Sort (tiles);
 
-		for (int i = 0; i < tileObjects.Length; i++) {
-			tiles [indices[i]].symbol = symbols[i];
+		map = new Tile[10, 10];
+
+		for (int m = 0; m < 10; m++) {
+			for (int n = 0; n < 10; n++) {
+				map [m, n] = tiles [m * 10 + n];
+			}
 		}
 
-		winText.enabled = false;
-		warningText.enabled = false;
-
-		numPlayersSurviving = numPlayers;
-		prevGeneratedSymbol = -1;
-
-		gameOvers = new bool[numPlayers];
+		// Set up warning objects
+		rowWarningRenderer = rowWarning.GetComponent<SpriteRenderer>();
+		colWarningRenderer = colWarning.GetComponent<SpriteRenderer>();
 	}
-	
-	// Update is called once per frame
+
+	void FixedUpdate() {
+		if (timeElapsed > roundDuration * 60.0f) {
+			isGameOver = true;
+			winText.enabled = true;
+		} else if (Mathf.FloorToInt(timeElapsed) % 30 == 27 && !isWarned) {
+			isWarned = true;
+			toDestroyRow = UnityEngine.Random.Range (0, 2);
+			if (toDestroyRow == 0) {
+				colToDestroy = UnityEngine.Random.Range (0, colsRemaining);
+				colWarning.transform.position = new Vector2 (-4.5f + colToDestroy, 0);
+			} else {
+				rowToDestroy = UnityEngine.Random.Range (0, rowsRemaining);
+				rowWarning.transform.position = new Vector2 (0, 4.5f - rowToDestroy);
+			}
+		} else if (timeElapsed % 30 >= 27 && timeElapsed % 30 < 30) {
+			int index;
+
+			// Alert column destruction
+			if (toDestroyRow == 0) {
+				colWarningRenderer.enabled = true;
+				index = Mathf.FloorToInt ((Time.time * 60)) % colWarningFrame.Length;
+				colWarningRenderer.sprite = colWarningFrame [index];
+			}
+			// Alert row destruction
+			else {
+				rowWarningRenderer.enabled = true;
+				index = Mathf.FloorToInt ((Time.time * 60)) % rowWarningFrame.Length;
+				rowWarningRenderer.sprite = rowWarningFrame [index];
+			}
+		} else if (Mathf.FloorToInt(timeElapsed) > 0 && Mathf.FloorToInt(timeElapsed) % 30 == 0 && !destroyedEarlier) {
+			rowWarningRenderer.enabled = false;
+			colWarningRenderer.enabled = false;
+			isWarned = false;
+			destroyedEarlier = true;
+			StartCoroutine (DestroySetsOfTiles ());
+		} else if (Mathf.FloorToInt(timeElapsed) % 30 == 1) {
+			destroyedEarlier = false;
+		}
+	}
+
+	// LateUpdate is used to permit execution of other critical player/environment actions
 	void LateUpdate () {
-		if (numPlayersSurviving > 1) {
+		if (!isGameOver) {
 			timeElapsed += Time.deltaTime;
 
 			timeText.text = "Time: " + Mathf.FloorToInt (timeElapsed / 60) + ":" + Mathf.FloorToInt (timeElapsed % 60);
+		}
+	}
+		
+	IEnumerator DestroySetsOfTiles() {
+		// Destroy column of tiles
+		if (toDestroyRow == 0) {
+			colsRemaining -= 1;
 
-			// if 3 minutes for a round is up
-			if (timeElapsed >= (roundDuration * 60f)) {
-				if (numPlayersSurviving == 1) {
-					winText.text = "Game Won!";
-					winText.enabled = true;
-				} else if (numPlayersSurviving <= 0) {
-					winText.text = "Game Over.";
-					winText.enabled = true;
-				} else {
-					winText.text = "Game Draw~";
-					winText.enabled = true;
-				}
-			} else if (Mathf.FloorToInt (timeElapsed) > 0 && Mathf.FloorToInt (timeElapsed) % 30 == 27 && !isGenerated) {
-				while (symbolToDestroy == prevGeneratedSymbol) {
-					symbolToDestroy = Random.Range (0, 4); // 5 different symbols for now: {0, 1, 2, 3, 4}
-				}
-				isGenerated = true;
-				warningText.text = "Destroying tiles with symbol " + symbolToDestroy + " in 3...";
-				warningText.enabled = true;
-			} else if (Mathf.FloorToInt (timeElapsed) > 0 && Mathf.FloorToInt (timeElapsed) % 30 == 28) {
-				warningText.text = "Destroying tiles with symbol " + symbolToDestroy + " in 2...";
-			} else if (Mathf.FloorToInt (timeElapsed) > 0 && Mathf.FloorToInt (timeElapsed) % 30 == 29) {
-				warningText.text = "Destroying tiles with symbol " + symbolToDestroy + " in 1...";
-				warningText.enabled = true;
-			} else if (Mathf.FloorToInt (timeElapsed) > 0 && Mathf.FloorToInt (timeElapsed) % 30 == 0 && !destroyedEarlier) {
-				warningText.enabled = false;
-				isGenerated = false;
-				DestroyTiles (symbolToDestroy);
-				triggerTime = Mathf.FloorToInt (timeElapsed);
-				destroyedEarlier = true;
-				prevGeneratedSymbol = symbolToDestroy;
-			} else if (Mathf.FloorToInt (timeElapsed) >= (triggerTime + 1)) {
-				destroyedEarlier = false;
+			// destroy the column
+			for (int r = 0; r < 10; r++) {
+				map [r, colToDestroy].isDestroyed = true;
+			}
+
+			yield return new WaitForSeconds (2.0f);
+
+			// simulate map fragment fusion
+			for (int r = 0; r < rowsRemaining; r++) {
+				map [r, colToDestroy].isDestroyed = false;
+				map [r, colsRemaining].isDestroyed = true;
 			}
 		}
-	}
+		// Else, destroy row of tiles
+		else {
+			rowsRemaining -= 1;
 
-	void DestroyTiles(int symbolChosenBySystem) {
-		print ("[DESTROY TILE] Destroying tiles with symbol " + symbolChosenBySystem);
-		for (int i = 0; i < tiles.Length; i++) {
-			tiles [i].DestroyTileWithSymbol (symbolChosenBySystem);
+			// destroy the column
+			for (int c = 0; c < 10; c++) {
+				map [rowToDestroy, c].isDestroyed = true;
+			}
+
+			yield return new WaitForSeconds (2.0f);
+
+			// simulate map fragment fusion
+			for (int c = 0; c < colsRemaining; c++) {
+				map [rowToDestroy, c].isDestroyed = false;
+				map [rowsRemaining, c].isDestroyed = true;
+			}
 		}
-	}
-
-	bool IsGameOver() {
-		return numPlayersSurviving == 1;
 	}
 }

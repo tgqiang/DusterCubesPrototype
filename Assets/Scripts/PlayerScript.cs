@@ -27,41 +27,43 @@ public class PlayerScript : MonoBehaviour
 
     void FixedUpdate()
     {
-		if (!isDead && gameManager.numPlayersSurviving > 1)
+		if (!isDead)
         {
 			checkTileOn ();
 			if (id == 1) {
 				if (Input.GetKeyUp (KeyCode.A)) {
+					checkTileOff ();
 					MoveLeft ();
 					checkTileOn ();
 				} else if (Input.GetKeyUp (KeyCode.D)) {
+					checkTileOff ();
 					MoveRight ();
 					checkTileOn ();
 				} else if (Input.GetKeyUp (KeyCode.W)) {
+					checkTileOff ();
 					MoveUp ();
 					checkTileOn ();
 				} else if (Input.GetKeyUp (KeyCode.S)) {
+					checkTileOff ();
 					MoveDown ();
 					checkTileOn ();
 				}
 			} else if (id == 2) {
-				if (Input.GetKeyUp(KeyCode.LeftArrow))
-				{
+				if (Input.GetKeyUp(KeyCode.LeftArrow)) {
+					checkTileOff ();
 					MoveLeft();
 					checkTileOn();
 				}
-				else if (Input.GetKeyUp(KeyCode.RightArrow))
-				{
+				else if (Input.GetKeyUp(KeyCode.RightArrow)) {
+					checkTileOff ();
 					MoveRight();
 					checkTileOn();
-				}
-				else if (Input.GetKeyUp(KeyCode.UpArrow))
-				{
+				} else if (Input.GetKeyUp(KeyCode.UpArrow)) {
+					checkTileOff ();
 					MoveUp();
 					checkTileOn();
-				}
-				else if (Input.GetKeyUp(KeyCode.DownArrow))
-				{
+				} else if (Input.GetKeyUp(KeyCode.DownArrow)) {
+					checkTileOff ();
 					MoveDown();
 					checkTileOn();
 				}
@@ -104,20 +106,26 @@ public class PlayerScript : MonoBehaviour
 				if (Tiles [i].GetComponent<Tile> ().isDestroyed) {
 					isDead = true;
 					deathText.text = deathText.text + "\nPlayer " + id + " died.";
-					gameManager.numPlayersSurviving -= 1;
-					if (gameManager.numPlayersSurviving <= 0) {
-						gameManager.winText.text = "Game Over.";
-						gameManager.winText.enabled = true;
-					}
-					else if (gameManager.numPlayersSurviving == 1) {
-						gameManager.winText.text = "Game Won!";
-						gameManager.winText.enabled = true;
-					}
 				} else {
 					Tiles [i].GetComponent<Tile> ().isStepped = true;
 				}
             }
         }
     }
+
+	void checkTileOff() {
+		for (int i = 0; i < Tiles.Count;i++)
+		{
+			if (pb.position.Equals(Tiles[i].position))
+			{
+				if (Tiles [i].GetComponent<Tile> ().isDestroyed) {
+					isDead = true;
+					deathText.text = deathText.text + "\nPlayer " + id + " died.";
+				} else {
+					Tiles [i].GetComponent<Tile> ().isStepped = false;
+				}
+			}
+		}
+	}
 
 }
