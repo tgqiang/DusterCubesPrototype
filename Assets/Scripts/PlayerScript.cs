@@ -1,17 +1,22 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerScript : MonoBehaviour
 {
 
     public bool isDead = false;
+	public int id;
     public Transform pb;
     public List<Transform> Tiles;
+	public Text deathText;
+
+	public GameManagerScript gameManager;
+
     // Use this for initialization
     void Start()
     {
-
     }
 
     // Update is called once per frame
@@ -22,28 +27,47 @@ public class PlayerScript : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (!isDead)
+		if (!isDead)
         {
-            if (Input.GetKeyUp(KeyCode.A))
-            {
-                MoveLeft();
-                checkTileOn();
-            }
-            else if (Input.GetKeyUp(KeyCode.D))
-            {
-                MoveRight();
-                checkTileOn();
-            }
-            else if (Input.GetKeyUp(KeyCode.W))
-            {
-                MoveUp();
-                checkTileOn();
-            }
-            else if (Input.GetKeyUp(KeyCode.S))
-            {
-                MoveDown();
-                checkTileOn();
-            }
+			checkTileOn ();
+			if (id == 1) {
+				if (Input.GetKeyUp (KeyCode.A)) {
+					checkTileOff ();
+					MoveLeft ();
+					checkTileOn ();
+				} else if (Input.GetKeyUp (KeyCode.D)) {
+					checkTileOff ();
+					MoveRight ();
+					checkTileOn ();
+				} else if (Input.GetKeyUp (KeyCode.W)) {
+					checkTileOff ();
+					MoveUp ();
+					checkTileOn ();
+				} else if (Input.GetKeyUp (KeyCode.S)) {
+					checkTileOff ();
+					MoveDown ();
+					checkTileOn ();
+				}
+			} else if (id == 2) {
+				if (Input.GetKeyUp(KeyCode.LeftArrow)) {
+					checkTileOff ();
+					MoveLeft();
+					checkTileOn();
+				}
+				else if (Input.GetKeyUp(KeyCode.RightArrow)) {
+					checkTileOff ();
+					MoveRight();
+					checkTileOn();
+				} else if (Input.GetKeyUp(KeyCode.UpArrow)) {
+					checkTileOff ();
+					MoveUp();
+					checkTileOn();
+				} else if (Input.GetKeyUp(KeyCode.DownArrow)) {
+					checkTileOff ();
+					MoveDown();
+					checkTileOn();
+				}
+			}
         }
     }
 
@@ -79,9 +103,29 @@ public class PlayerScript : MonoBehaviour
         {
             if (pb.position.Equals(Tiles[i].position))
             {
-                Tiles[i].GetComponent<Tile>().isStepped = true;
+				if (Tiles [i].GetComponent<Tile> ().isDestroyed) {
+					isDead = true;
+					deathText.text = deathText.text + "\nPlayer " + id + " died.";
+				} else {
+					Tiles [i].GetComponent<Tile> ().isStepped = true;
+				}
             }
         }
     }
+
+	void checkTileOff() {
+		for (int i = 0; i < Tiles.Count;i++)
+		{
+			if (pb.position.Equals(Tiles[i].position))
+			{
+				if (Tiles [i].GetComponent<Tile> ().isDestroyed) {
+					isDead = true;
+					deathText.text = deathText.text + "\nPlayer " + id + " died.";
+				} else {
+					Tiles [i].GetComponent<Tile> ().isStepped = false;
+				}
+			}
+		}
+	}
 
 }
