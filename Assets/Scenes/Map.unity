@@ -11375,7 +11375,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timeElapsed: 0
-  roundDuration: 1
+  roundDuration: 3
   tiles: []
   rowsRemaining: 10
   colsRemaining: 10
@@ -11406,6 +11406,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: a82af9dd6f37ab64c8cac30ff96a274a, type: 3}
   - {fileID: 21300000, guid: 2497b8cc843a90f4795cc7ba59033c94, type: 3}
   numPlayers: 2
+  startWarning: 0
   winText: {fileID: 182964923}
   deathText: {fileID: 181729941}
   timeText: {fileID: 1267351854}
