@@ -27,7 +27,7 @@ public class GameManagerScript : MonoBehaviour {
 	public int startWarning;
 	public int startDestroying;
 	public int count;
-	public int[] intervals = { 3, 3, 3, 2, 2, 2, 1, 1, 1 };
+	public int[] intervals = { 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1 };
 
 	public Text winText;
 	public Text deathText;
@@ -48,8 +48,8 @@ public class GameManagerScript : MonoBehaviour {
 	void Start () {
 		timeElapsed = 0;
 		winText.enabled = false;
-		startDestroying = 30;
-		startWarning = 27;
+		startDestroying = 20;
+		startWarning = 18;
 
 		// Set-up the game tiles
 		GameObject[] tileObjects = GameObject.FindGameObjectsWithTag ("Tile");
@@ -75,7 +75,7 @@ public class GameManagerScript : MonoBehaviour {
 
 	void FixedUpdate() {
 		print ("[" + startDestroying + ", " + intervals[count] + ", " + startWarning + "]");
-		print ((Mathf.FloorToInt (timeElapsed) % 30) == (startDestroying % 30));
+		//print ((Mathf.FloorToInt (timeElapsed) % 20) == (startDestroying % 20));
 
 		// if time is up
 		if (timeElapsed > roundDuration * 60.0f) {
@@ -83,7 +83,7 @@ public class GameManagerScript : MonoBehaviour {
 			winText.enabled = true;
 		}
 		// else if warning should begin
-		else if (Mathf.FloorToInt(timeElapsed) % 30 == startWarning && !isWarned) {
+		else if (Mathf.FloorToInt(timeElapsed) % 20 == startWarning && !isWarned) {
 			print ("Warning begins.");
 			isWarned = true;
 			toDestroyRow = UnityEngine.Random.Range (0, 2);
@@ -96,7 +96,7 @@ public class GameManagerScript : MonoBehaviour {
 			}
 		}
 		// for animating the warning before destruction occurs
-		else if (Mathf.FloorToInt(timeElapsed) % 30 >= startWarning && Mathf.FloorToInt(timeElapsed) % 30 < startDestroying) {
+		else if (Mathf.FloorToInt(timeElapsed) % 20 >= startWarning && Mathf.FloorToInt(timeElapsed) % 20 < startDestroying) {
 			int index;
 
 			// Alert column destruction
@@ -113,13 +113,13 @@ public class GameManagerScript : MonoBehaviour {
 			}
 		}
 		// else if it is time to destroy row/column of tiles
-		else if (Mathf.FloorToInt(timeElapsed) > 0 && ((Mathf.FloorToInt(timeElapsed) % 30) == (startDestroying % 30)) && !destroyedEarlier) {
+		else if (Mathf.FloorToInt(timeElapsed) > 0 && ((Mathf.FloorToInt(timeElapsed) % 20) == (startDestroying % 20)) && !destroyedEarlier) {
 			print ("Destruction begins.");
 			rowWarningRenderer.enabled = false;
 			colWarningRenderer.enabled = false;
 			isWarned = false;
 			destroyedEarlier = true;
-			startDestroying -= 4;
+			startDestroying -= 2;
 			count += 1;
 			startWarning = startDestroying - intervals[count];
 			StartCoroutine (DestroySetsOfTiles ());
