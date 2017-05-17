@@ -28,6 +28,8 @@ public class GameManagerScript : MonoBehaviour {
 	public Text deathText;
 	public Text timeText;
 
+    public GameObject player1, player2;
+
 	int toDestroyRow;
 	int rowToDestroy;
 	int colToDestroy;
@@ -130,7 +132,9 @@ public class GameManagerScript : MonoBehaviour {
 				map [r, colToDestroy].isDestroyed = false;
 				map [r, colsRemaining].isDestroyed = true;
 			}
-		}
+            updatePlayerConstrain(false);
+
+        }
 		// Else, destroy row of tiles
 		else {
 			rowsRemaining -= 1;
@@ -147,6 +151,38 @@ public class GameManagerScript : MonoBehaviour {
 				map [rowToDestroy, c].isDestroyed = false;
 				map [rowsRemaining, c].isDestroyed = true;
 			}
-		}
+            updatePlayerConstrain(true);
+
+        }
 	}
+
+    void updatePlayerConstrain(bool isRow)
+    {
+        if (!isRow)
+        {
+            player1.GetComponent<PlayerScript>().removeCol();
+            player2.GetComponent<PlayerScript>().removeCol();
+            if (Mathf.Abs(player2.GetComponent<PlayerScript>().offsetX + 10) >= colsRemaining)
+            {
+                player2.GetComponent<PlayerScript>().MoveLeft();
+            }
+            if (Mathf.Abs(player1.GetComponent<PlayerScript>().offsetX + 10) >= colsRemaining)
+            {
+                player1.GetComponent<PlayerScript>().MoveLeft();
+            }
+        }
+        else
+        {
+            player1.GetComponent<PlayerScript>().removeRow();
+            player2.GetComponent<PlayerScript>().removeRow();
+            if (Mathf.Abs(player2.GetComponent<PlayerScript>().offsetY + 10) >= rowsRemaining)
+            {
+                player2.GetComponent<PlayerScript>().MoveUp();
+            }
+            if (Mathf.Abs(player1.GetComponent<PlayerScript>().offsetY + 10) >= rowsRemaining)
+            {
+                player1.GetComponent<PlayerScript>().MoveUp();
+            }
+        }
+    }
 }

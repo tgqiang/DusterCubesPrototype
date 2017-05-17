@@ -11,6 +11,7 @@ public class PlayerScript : MonoBehaviour
     public Transform pb;
     public List<Transform> Tiles;
 	public Text deathText;
+    public float offsetX = 0, offsetY = 0;
 
 	public GameManagerScript gameManager;
 
@@ -31,38 +32,38 @@ public class PlayerScript : MonoBehaviour
         {
 			checkTileOn ();
 			if (id == 1) {
-				if (Input.GetKeyUp (KeyCode.A)) {
+				if (Input.GetKeyDown(KeyCode.A)) {
 					checkTileOff ();
 					MoveLeft ();
 					checkTileOn ();
-				} else if (Input.GetKeyUp (KeyCode.D)) {
+				} else if (Input.GetKeyDown(KeyCode.D)) {
 					checkTileOff ();
 					MoveRight ();
 					checkTileOn ();
-				} else if (Input.GetKeyUp (KeyCode.W)) {
+				} else if (Input.GetKeyDown(KeyCode.W)) {
 					checkTileOff ();
 					MoveUp ();
 					checkTileOn ();
-				} else if (Input.GetKeyUp (KeyCode.S)) {
+				} else if (Input.GetKeyDown(KeyCode.S)) {
 					checkTileOff ();
 					MoveDown ();
 					checkTileOn ();
 				}
 			} else if (id == 2) {
-				if (Input.GetKeyUp(KeyCode.LeftArrow)) {
+				if (Input.GetKeyDown(KeyCode.LeftArrow)) {
 					checkTileOff ();
 					MoveLeft();
 					checkTileOn();
 				}
-				else if (Input.GetKeyUp(KeyCode.RightArrow)) {
+				else if (Input.GetKeyDown(KeyCode.RightArrow)) {
 					checkTileOff ();
 					MoveRight();
 					checkTileOn();
-				} else if (Input.GetKeyUp(KeyCode.UpArrow)) {
+				} else if (Input.GetKeyDown(KeyCode.UpArrow)) {
 					checkTileOff ();
 					MoveUp();
 					checkTileOn();
-				} else if (Input.GetKeyUp(KeyCode.DownArrow)) {
+				} else if (Input.GetKeyDown(KeyCode.DownArrow)) {
 					checkTileOff ();
 					MoveDown();
 					checkTileOn();
@@ -71,28 +72,28 @@ public class PlayerScript : MonoBehaviour
         }
     }
 
-    void MoveLeft()
+    public void MoveLeft()
     {
-        if (!((pb.position + Vector3.left).x < -4.5))
+        if (!((pb.position + Vector3.left).x < -4.5)) //always be left most, aka will not be truncted
             pb.position = (pb.position + Vector3.left);
     }
 
     void MoveRight()
     {
-        if (!((pb.position + Vector3.right).x > 4.5))
+        if (!((pb.position + Vector3.right).x > 4.5 - offsetX))
             pb.position = (pb.position + Vector3.right);
     }
 
-    void MoveUp()
+    public void MoveUp()
     {
-        if ((pb.position + Vector3.up).y < 5.5)
+        if ((pb.position + Vector3.up).y < 5.5) //always be top most, aka will not be truncted
         //if (!((pb.position + Vector3.up).y < 4.5))
             pb.position = (pb.position + Vector3.up);
     }
 
     void MoveDown()
     {
-        if ((pb.position + Vector3.down).y > -5.5)
+        if ((pb.position + Vector3.down).y > -5.5 + offsetY)
         //if (!((pb.position + Vector3.down).y > -4.5))
             pb.position = (pb.position + Vector3.down);
     }
@@ -127,5 +128,14 @@ public class PlayerScript : MonoBehaviour
 			}
 		}
 	}
+
+    public void removeRow() //for border constrain
+    {
+        offsetY += 1;
+    }
+    public void removeCol()//for border constrain
+    {
+        offsetX += 1;
+    }
 
 }
