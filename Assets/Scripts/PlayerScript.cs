@@ -40,6 +40,15 @@ public class PlayerScript : MonoBehaviour
 
     }
 
+
+	/*
+	 *			0 
+	 * 			|
+	 * 	  2 --------- 3
+	 * 			|
+	 * 			4
+	 * 
+	*/
     void FixedUpdate()
     {
 		if (!isDead || !isGlued)
@@ -67,6 +76,11 @@ public class PlayerScript : MonoBehaviour
 					MoveDown ();
 					checkTileOn ();
 				}
+				if (isBoxingGunEquipped || isGlueGunEquipped || isGravGunEquipped){
+					if (Input.GetKeyDown (KeyCode.Space)) {
+						pb.GetComponent<Gun> ().fireBullet (direction);
+					}
+				}
 			} else if (id == 2) {
 				if (Input.GetKeyDown(KeyCode.LeftArrow)) {
 					direction = 2;
@@ -89,6 +103,11 @@ public class PlayerScript : MonoBehaviour
 					checkTileOff ();
 					MoveDown();
 					checkTileOn();
+				}
+				if (isBoxingGunEquipped || isGlueGunEquipped || isGravGunEquipped){
+					if (Input.GetKeyDown (KeyCode.RightControl)) {
+						pb.GetComponent<Gun> ().fireBullet (direction);
+					}
 				}
 			}
         }
@@ -204,6 +223,7 @@ public class PlayerScript : MonoBehaviour
 		isBoxingGunEquipped = false;
 		isGlueGunEquipped = true;
 		playerRenderer.sprite = glueGunEquippedSprites [direction];
+		pb.GetComponent<Gun> ().setGunType (Gun.gunType.Glue);
 	}
 
 	public void EquipGravGun() {
@@ -211,6 +231,7 @@ public class PlayerScript : MonoBehaviour
 		isGlueGunEquipped = false;
 		isGravGunEquipped = true;
 		playerRenderer.sprite = gravGunEquippedSprites [direction];
+		pb.GetComponent<Gun> ().setGunType (Gun.gunType.Grav);
 	}
 
 	public void EquipBoxingGun() {
@@ -218,6 +239,7 @@ public class PlayerScript : MonoBehaviour
 		isGravGunEquipped = false;
 		isBoxingGunEquipped = true;
 		playerRenderer.sprite = boxingGunEquippedSprites [direction];
+		pb.GetComponent<Gun> ().setGunType (Gun.gunType.Boxing);
 	}
 
 	public void setGlued() {

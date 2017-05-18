@@ -54,10 +54,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isStepped: 0
   isDestroyed: 0
-  symbol: 0
+  id: 
   initial: {fileID: 21300000, guid: 3f5caff27243ca744b1a672ff4ca631a, type: 3}
   active: {fileID: 21300000, guid: 255d83c479f9d3a42bb7bd084b0df054, type: 3}
   destroyed: {fileID: 21300000, guid: 0d2ec03e551af07478018daa1b487fc8, type: 3}
+  tileRenderer: {fileID: 0}
 --- !u!212 &212649177471677754
 SpriteRenderer:
   m_ObjectHideFlags: 1
