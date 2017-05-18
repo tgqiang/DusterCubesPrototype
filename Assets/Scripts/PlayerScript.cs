@@ -239,7 +239,7 @@ public class PlayerScript : MonoBehaviour
 	public void KillPlayer() {
 		isDead = true;
 		deathText.text = deathText.text + "\nPlayer " + id + " died.";
-	}
+	}	
 
 	public void EquipGlueGun() {
 		isGravGunEquipped = false;

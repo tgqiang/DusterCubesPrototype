@@ -65,6 +65,7 @@ public class Gun : MonoBehaviour {
 		else {
 			return;
 		}*/
+
 		GameObject bullet = (GameObject)Instantiate (BulletT);
 		bullet.transform.position = transform.position;
 		//bullet.GetComponent<Bullet> ().setDirection (direction)/;
@@ -84,33 +85,44 @@ public class Gun : MonoBehaviour {
 			break;
 		}
 
+		if (currentHoldingGun != gunType.Glue) {
+			Destroy (bullet);
+		}
 		switch (direction) {
 		case 0: //up
 			Debug.Log ("Top-face");
-			bullet.GetComponent<Bullet> ().setPosition (transform.position);
-			fireTo = transform.position - bullet.transform.position + new Vector3(0f,1f,0);
-			bullet.GetComponent<Bullet> ().setDirection (fireTo);
+			if (currentHoldingGun == gunType.Glue) {
+				bullet.GetComponent<Bullet> ().setPosition (transform.position);
+				fireTo = transform.position - bullet.transform.position + new Vector3(0f,1f,0);
+				bullet.GetComponent<Bullet> ().setDirection (fireTo);
+			}
 			gravityColRenderer.sprite = gravityCols [0];
 			break;
 		case 1: //down
 			Debug.Log ("Down-face");
-			bullet.GetComponent<Bullet> ().setPosition (transform.position);
-			fireTo = transform.position - bullet.transform.position + new Vector3(0f,-1f,0);
-			bullet.GetComponent<Bullet> ().setDirection (fireTo);
+			if (currentHoldingGun == gunType.Glue) {
+				bullet.GetComponent<Bullet> ().setPosition (transform.position);
+				fireTo = transform.position - bullet.transform.position + new Vector3 (0f, -1f, 0);
+				bullet.GetComponent<Bullet> ().setDirection (fireTo);
+			}
 			gravityColRenderer.sprite = gravityCols [1];
 			break;
 		case 2: //left
 			Debug.Log ("Left-face");
-			bullet.GetComponent<Bullet> ().setPosition (transform.position);
-			fireTo = transform.position - bullet.transform.position + new Vector3(-1f,0f,0);
-			bullet.GetComponent<Bullet> ().setDirection (fireTo);
+			if (currentHoldingGun == gunType.Glue) {
+				bullet.GetComponent<Bullet> ().setPosition (transform.position);
+				fireTo = transform.position - bullet.transform.position + new Vector3 (-1f, 0f, 0);
+				bullet.GetComponent<Bullet> ().setDirection (fireTo);
+			}
 			gravityRowRenderer.sprite = gravityRows [0];
 			break;
 		case 3: //right
 			Debug.Log ("Right-face");
-			bullet.GetComponent<Bullet> ().setPosition (transform.position);
-			fireTo = transform.position - bullet.transform.position + new Vector3(1f,0f,0);
-			bullet.GetComponent<Bullet> ().setDirection (fireTo);
+			if (currentHoldingGun == gunType.Glue) {
+				bullet.GetComponent<Bullet> ().setPosition (transform.position);
+				fireTo = transform.position - bullet.transform.position + new Vector3 (1f, 0f, 0);
+				bullet.GetComponent<Bullet> ().setDirection (fireTo);
+			}
 			gravityRowRenderer.sprite = gravityRows [1];
 			break;			
 		}

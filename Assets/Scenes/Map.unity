@@ -7201,6 +7201,33 @@ MonoBehaviour:
   - {fileID: 21300000, guid: d8c782bee30b2c24dbc84320537a2319, type: 3}
   gravityRowRenderer: {fileID: 581989063}
   gravityColRenderer: {fileID: 656652790}
+  BulletT: {fileID: 128968, guid: 741cd4d3c9ecebd4984f3f14f950f13e, type: 2}
+  player: {fileID: 1091643646}
+--- !u!61 &1091643650
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1091643646}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 0.5, y: 0.5}
+    newSize: {x: 0.5, y: 0.5}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.5, y: 0.5}
+  m_EdgeRadius: 0
 --- !u!1001 &1096633720
 Prefab:
   m_ObjectHideFlags: 0
@@ -12133,11 +12160,38 @@ MonoBehaviour:
   - {fileID: 21300000, guid: d8c782bee30b2c24dbc84320537a2319, type: 3}
   gravityRowRenderer: {fileID: 215055730}
   gravityColRenderer: {fileID: 792462184}
+  BulletT: {fileID: 128968, guid: 024a609b923eddb4e98315bbadf22301, type: 2}
+  player: {fileID: 1800407211}
 --- !u!4 &1800407214 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4079164663637208, guid: 9eb266efdf5e0ad4394c2ed2a28b0a65,
     type: 2}
   m_PrefabInternal: {fileID: 1312984655}
+--- !u!61 &1800407215
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1800407211}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 0.5, y: 0.5}
+    newSize: {x: 0.5, y: 0.5}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.5, y: 0.5}
+  m_EdgeRadius: 0
 --- !u!1001 &1821404341
 Prefab:
   m_ObjectHideFlags: 0
