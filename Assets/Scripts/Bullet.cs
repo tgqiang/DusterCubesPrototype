@@ -3,6 +3,12 @@ using System.Collections;
 
 public class Bullet : MonoBehaviour {
 
+	public enum bulletType {
+		Glue,		//range 2, "stuck" status, 15 button mash to escape
+		Grav,		//range full, 
+		Boxing		//range 1, push-back 1
+	};
+
 	[SerializeField]
 	float speed = 0.2f; // the bullet speed
 	Vector2 _direction; // the direction of the bullet
@@ -12,6 +18,7 @@ public class Bullet : MonoBehaviour {
 
 	public int Range = 4;
 	Vector3 startPos;
+	int bulletTypeI = 0;
 
 
     void Awake()
@@ -34,6 +41,14 @@ public class Bullet : MonoBehaviour {
 
 	public void setRange(int r){
 		Range = r;	
+	}
+
+	public void setType(int t){
+		bulletTypeI = t;	
+	}
+
+	public int getType(){
+		return bulletTypeI;	
 	}
 
 	public void setDirection(Vector2 direction)

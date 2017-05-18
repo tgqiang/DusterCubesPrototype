@@ -16,6 +16,7 @@ public class PlayerScript : MonoBehaviour
 	public Text deathText;
     public float offsetX = 0, offsetY = 0;
 	public int direction = -1;
+	public float stunDuration = 0f;
 
 
 	public bool isGlueGunEquipped;
@@ -52,8 +53,7 @@ public class PlayerScript : MonoBehaviour
 	*/
     void FixedUpdate()
     {
-		if (!isDead && !isGlued)
-        {
+		if (!isDead && !isGlued && stunDuration <= 0) {
 			checkTileOn ();
 			if (id == 1) {
 				if (Input.GetKeyDown (KeyCode.A)) {
@@ -115,19 +115,19 @@ public class PlayerScript : MonoBehaviour
 				if (mashCount > 15) {
 					mashCount = 0;
 					isGlued = false;
-				} else
-					if (Input.GetKeyDown (KeyCode.Space)) {
-						mashCount += 1;
-					}
+				} else if (Input.GetKeyDown (KeyCode.Space)) {
+					mashCount += 1;
+				}
 			} else if (id == 2) {
 				if (mashCount >= 15) {
 					setUnglued ();
-				} else
-					if (Input.GetKeyDown (KeyCode.RightControl)) {
-						mashCount += 1;
-					}
+				} else if (Input.GetKeyDown (KeyCode.RightControl)) {
+					mashCount += 1;
+				}
 			}
 				
+		} else if (stunDuration > 0) {
+			stunDuration -= Time.deltaTime;
 		}
     }
 
@@ -290,27 +290,58 @@ public class PlayerScript : MonoBehaviour
 	{
 		if (id == 1) {
 			if (other.gameObject.layer != LayerMask.NameToLayer ("Player1")) {
-				Debug.Log ("Player 1 stuck");
-				isGlued = true;
-				Destroy (other.gameObject);
+				if (other.gameObject.GetComponent<Bullet> ().getType () == 1) {
+					Vector3 backBy = (pb.transform.position - other.gameObject.transform.position).normalized;
+					pb.transform.position += backBy;
+					Debug.Log ("Player 1 knockedback");
+					stunDuration = 3f;
+					Destroy (other.gameObject);
+				} else if (other.gameObject.GetComponent<Bullet> ().getType () == 0) {
+					Debug.Log ("Player 1 stuck");
+					isGlued = true;
+					Destroy (other.gameObject);
+				}
 			}
+
 		} else if (id == 2) {
 			if (other.gameObject.layer != LayerMask.NameToLayer ("Player2")) {
-				Destroy (other.gameObject);
-				isGlued = true;
-				Debug.Log ("Player 2 stuck");
+				if (other.gameObject.GetComponent<Bullet> ().getType () == 1) {
+					Vector3 backBy = (pb.transform.position - other.gameObject.transform.position).normalized;
+					pb.transform.position += backBy;
+					Debug.Log ("Player 2 knockedback");
+					stunDuration = 3f;
+					Destroy (other.gameObject);
+				} else if (other.gameObject.GetComponent<Bullet> ().getType () == 0) {
+					Destroy (other.gameObject);
+					isGlued = true;
+					Debug.Log ("Player 2 stuck");
+				}
 			}
 		} else if (id == 3) {
 			if (other.gameObject.layer != LayerMask.NameToLayer ("Player3")) {
-				Destroy (other.gameObject);
-				isGlued = true;
-				Debug.Log ("Player 3 stuck");
+				if (other.gameObject.GetComponent<Bullet> ().getType () == 1) {
+					Vector3 backBy = (pb.transform.position - other.gameObject.transform.position).normalized;
+					pb.transform.position += backBy;
+					Debug.Log ("Player 3 knockedback");
+					Destroy (other.gameObject);
+				} else if (other.gameObject.GetComponent<Bullet> ().getType () == 0) {
+					Destroy (other.gameObject);
+					isGlued = true;
+					Debug.Log ("Player 3 stuck");
+				}
 			}
 		} else if (id == 4) {
 			if (other.gameObject.layer != LayerMask.NameToLayer ("Player4")) {
-				Destroy (other.gameObject);
-				isGlued = true;
-				Debug.Log ("Player 4 stuck");
+				if (other.gameObject.GetComponent<Bullet> ().getType () == 1) {
+					Vector3 backBy = (pb.transform.position - other.gameObject.transform.position).normalized;
+					pb.transform.position += backBy;
+					Debug.Log ("Player 4 knockedback");
+					Destroy (other.gameObject);
+				} else if (other.gameObject.GetComponent<Bullet> ().getType () == 0) {
+					Destroy (other.gameObject);
+					isGlued = true;
+					Debug.Log ("Player 4 stuck");
+				}
 			}
 		}
 

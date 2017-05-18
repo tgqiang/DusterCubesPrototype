@@ -7156,6 +7156,7 @@ MonoBehaviour:
   offsetX: 0
   offsetY: 0
   direction: -1
+  stunDuration: 0
   isGlueGunEquipped: 0
   isGravGunEquipped: 0
   isBoxingGunEquipped: 0
@@ -7201,7 +7202,8 @@ MonoBehaviour:
   - {fileID: 21300000, guid: d8c782bee30b2c24dbc84320537a2319, type: 3}
   gravityRowRenderer: {fileID: 581989063}
   gravityColRenderer: {fileID: 656652790}
-  BulletT: {fileID: 128968, guid: 741cd4d3c9ecebd4984f3f14f950f13e, type: 2}
+  BulletGlue: {fileID: 128968, guid: 741cd4d3c9ecebd4984f3f14f950f13e, type: 2}
+  BulletBox: {fileID: 128968, guid: 73089db8f37d898428512c979a3de2d0, type: 2}
   player: {fileID: 1091643646}
 --- !u!61 &1091643650
 BoxCollider2D:
@@ -11711,7 +11713,7 @@ Prefab:
     - target: {fileID: 114836590673735568, guid: 9eb266efdf5e0ad4394c2ed2a28b0a65,
         type: 2}
       propertyPath: hasGravGun
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 114836590673735568, guid: 9eb266efdf5e0ad4394c2ed2a28b0a65,
         type: 2}
@@ -11719,6 +11721,11 @@ Prefab:
       value: 
       objectReference: {fileID: 21300000, guid: 7560907545de9884a9db0769eec3b4f0,
         type: 3}
+    - target: {fileID: 114836590673735568, guid: 9eb266efdf5e0ad4394c2ed2a28b0a65,
+        type: 2}
+      propertyPath: hasBoxingGun
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 9eb266efdf5e0ad4394c2ed2a28b0a65, type: 2}
   m_IsPrefabParent: 0
@@ -12115,6 +12122,7 @@ MonoBehaviour:
   offsetX: 0
   offsetY: 0
   direction: -1
+  stunDuration: 0
   isGlueGunEquipped: 0
   isGravGunEquipped: 0
   isBoxingGunEquipped: 0
@@ -12160,7 +12168,8 @@ MonoBehaviour:
   - {fileID: 21300000, guid: d8c782bee30b2c24dbc84320537a2319, type: 3}
   gravityRowRenderer: {fileID: 215055730}
   gravityColRenderer: {fileID: 792462184}
-  BulletT: {fileID: 128968, guid: 024a609b923eddb4e98315bbadf22301, type: 2}
+  BulletGlue: {fileID: 128968, guid: 024a609b923eddb4e98315bbadf22301, type: 2}
+  BulletBox: {fileID: 128968, guid: 35548163d097c2e4797e3f4b7cac2117, type: 2}
   player: {fileID: 1800407211}
 --- !u!4 &1800407214 stripped
 Transform:
