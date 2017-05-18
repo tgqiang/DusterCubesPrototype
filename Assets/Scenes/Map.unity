@@ -6615,6 +6615,17 @@ MonoBehaviour:
   - {fileID: 21300000, guid: c39d65b50f051f74f81d1a2d4ce4cd09, type: 3}
   - {fileID: 21300000, guid: e7d13cffdf935da4dafb7ff68937907a, type: 3}
   gameManager: {fileID: 2134181962}
+--- !u!114 &1091643649
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1091643646}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 423a1ef2ae16b7643a36f8e149f32388, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1096633720
 Prefab:
   m_ObjectHideFlags: 0
@@ -9639,6 +9650,11 @@ Prefab:
       value: 
       objectReference: {fileID: 21300000, guid: 9959352301d3e7a439b359b05ee330e2,
         type: 3}
+    - target: {fileID: 114836590673735568, guid: 9eb266efdf5e0ad4394c2ed2a28b0a65,
+        type: 2}
+      propertyPath: hasGravGun
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 9eb266efdf5e0ad4394c2ed2a28b0a65, type: 2}
   m_IsPrefabParent: 0
@@ -10880,7 +10896,7 @@ Prefab:
     - target: {fileID: 114836590673735568, guid: 9eb266efdf5e0ad4394c2ed2a28b0a65,
         type: 2}
       propertyPath: hasGlueGun
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 114836590673735568, guid: 9eb266efdf5e0ad4394c2ed2a28b0a65,
         type: 2}
@@ -11305,6 +11321,17 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 585025ec8d619f6409b23406d07b24e1, type: 3}
   - {fileID: 21300000, guid: 766b8c425edbb09458cec000ba443c01, type: 3}
   gameManager: {fileID: 2134181962}
+--- !u!114 &1800407213
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1800407211}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 423a1ef2ae16b7643a36f8e149f32388, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1800407214 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4079164663637208, guid: 9eb266efdf5e0ad4394c2ed2a28b0a65,
