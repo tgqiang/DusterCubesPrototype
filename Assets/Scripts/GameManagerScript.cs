@@ -74,7 +74,7 @@ public class GameManagerScript : MonoBehaviour {
 	}
 
 	void FixedUpdate() {
-		print ("[" + startDestroying + ", " + intervals[count] + ", " + startWarning + "]");
+		// print ("[" + startDestroying + ", " + intervals[count] + ", " + startWarning + "]");
 		//print ((Mathf.FloorToInt (timeElapsed) % 20) == (startDestroying % 20));
 
 		// if time is up
@@ -189,6 +189,7 @@ public class GameManagerScript : MonoBehaviour {
             player2.GetComponent<PlayerScript>().removeCol();
             if (Mathf.Abs(player2.GetComponent<PlayerScript>().offsetX + 10) >= colsRemaining)
             {
+				//if(player2.transform.position.x > map[0,colToDestroy].transform.position.x)
                 player2.GetComponent<PlayerScript>().MoveLeft();
             }
             if (Mathf.Abs(player1.GetComponent<PlayerScript>().offsetX + 10) >= colsRemaining)
@@ -202,6 +203,7 @@ public class GameManagerScript : MonoBehaviour {
             player2.GetComponent<PlayerScript>().removeRow();
             if (Mathf.Abs(player2.GetComponent<PlayerScript>().offsetY + 10) >= rowsRemaining)
             {
+				//if(player2.transform.position.y > map[rowToDestroy,0].transform.position.y)
                 player2.GetComponent<PlayerScript>().MoveUp();
             }
             if (Mathf.Abs(player1.GetComponent<PlayerScript>().offsetY + 10) >= rowsRemaining)

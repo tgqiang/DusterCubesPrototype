@@ -17,6 +17,7 @@ public class PlayerScript : MonoBehaviour
     public float offsetX = 0, offsetY = 0;
 	public int direction = -1;
 
+
 	public bool isGlueGunEquipped;
 	public bool isGravGunEquipped;
 	public bool isBoxingGunEquipped;
@@ -55,62 +56,79 @@ public class PlayerScript : MonoBehaviour
         {
 			checkTileOn ();
 			if (id == 1) {
-				if (Input.GetKeyDown(KeyCode.A)) {
+				if (Input.GetKeyDown (KeyCode.A)) {
 					direction = 2;
 					checkTileOff ();
 					MoveLeft ();
 					checkTileOn ();
-				} else if (Input.GetKeyDown(KeyCode.D)) {
+				} else if (Input.GetKeyDown (KeyCode.D)) {
 					direction = 3;
 					checkTileOff ();
 					MoveRight ();
 					checkTileOn ();
-				} else if (Input.GetKeyDown(KeyCode.W)) {
+				} else if (Input.GetKeyDown (KeyCode.W)) {
 					direction = 0;
 					checkTileOff ();
 					MoveUp ();
 					checkTileOn ();
-				} else if (Input.GetKeyDown(KeyCode.S)) {
+				} else if (Input.GetKeyDown (KeyCode.S)) {
 					direction = 1;
 					checkTileOff ();
 					MoveDown ();
 					checkTileOn ();
 				}
-				if (isBoxingGunEquipped || isGlueGunEquipped || isGravGunEquipped){
+				if (isBoxingGunEquipped || isGlueGunEquipped || isGravGunEquipped) {
 					if (Input.GetKeyDown (KeyCode.Space)) {
 						pb.GetComponent<Gun> ().fireBullet (direction);
 					}
 				}
 			} else if (id == 2) {
-				if (Input.GetKeyDown(KeyCode.LeftArrow)) {
+				if (Input.GetKeyDown (KeyCode.LeftArrow)) {
 					direction = 2;
 					checkTileOff ();
-					MoveLeft();
-					checkTileOn();
-				}
-				else if (Input.GetKeyDown(KeyCode.RightArrow)) {
+					MoveLeft ();
+					checkTileOn ();
+				} else if (Input.GetKeyDown (KeyCode.RightArrow)) {
 					direction = 3;
 					checkTileOff ();
-					MoveRight();
-					checkTileOn();
-				} else if (Input.GetKeyDown(KeyCode.UpArrow)) {
+					MoveRight ();
+					checkTileOn ();
+				} else if (Input.GetKeyDown (KeyCode.UpArrow)) {
 					direction = 0;
 					checkTileOff ();
-					MoveUp();
-					checkTileOn();
-				} else if (Input.GetKeyDown(KeyCode.DownArrow)) {
+					MoveUp ();
+					checkTileOn ();
+				} else if (Input.GetKeyDown (KeyCode.DownArrow)) {
 					direction = 1;
 					checkTileOff ();
-					MoveDown();
-					checkTileOn();
+					MoveDown ();
+					checkTileOn ();
 				}
-				if (isBoxingGunEquipped || isGlueGunEquipped || isGravGunEquipped){
+				if (isBoxingGunEquipped || isGlueGunEquipped || isGravGunEquipped) {
 					if (Input.GetKeyDown (KeyCode.RightControl)) {
 						pb.GetComponent<Gun> ().fireBullet (direction);
 					}
 				}
 			}
-        }
+		} else if (isGlued) {
+			if (id == 1) {
+				if (mashCount > 15) {
+					mashCount = 0;
+					isGlued = false;
+				} else
+					if (Input.GetKeyDown (KeyCode.Space)) {
+						mashCount += 1;
+					}
+			} else if (id == 2) {
+				if (mashCount >= 15) {
+					setUnglued ();
+				} else
+					if (Input.GetKeyDown (KeyCode.RightControl)) {
+						mashCount += 1;
+					}
+			}
+				
+		}
     }
 
     public void MoveLeft()
@@ -126,7 +144,7 @@ public class PlayerScript : MonoBehaviour
 			playerRenderer.sprite = unequipped;
 		}
         if (!((pb.position + Vector3.left).x < -4.5)) //always be left most, aka will not be truncted
-            pb.position = (pb.position + Vector3.left);
+			pb.position = (pb.position + Vector3.left );
     }
 
     void MoveRight()
@@ -142,7 +160,7 @@ public class PlayerScript : MonoBehaviour
 			playerRenderer.sprite = unequipped;
 		}
         if (!((pb.position + Vector3.right).x > 4.5 - offsetX))
-            pb.position = (pb.position + Vector3.right);
+			pb.position = (pb.position + Vector3.right );
     }
 
     public void MoveUp()
@@ -159,7 +177,7 @@ public class PlayerScript : MonoBehaviour
 		}
         if ((pb.position + Vector3.up).y < 5.5) //always be top most, aka will not be truncted
         //if (!((pb.position + Vector3.up).y < 4.5))
-            pb.position = (pb.position + Vector3.up);
+			pb.position = (pb.position + Vector3.up );
     }
 
     void MoveDown()
@@ -176,7 +194,7 @@ public class PlayerScript : MonoBehaviour
 		}
         if ((pb.position + Vector3.down).y > -5.5 + offsetY)
         //if (!((pb.position + Vector3.down).y > -4.5))
-            pb.position = (pb.position + Vector3.down);
+			pb.position = (pb.position + Vector3.down );
     }
 
     void checkTileOn()
@@ -268,4 +286,33 @@ public class PlayerScript : MonoBehaviour
         offsetX += 1;
     }
 
+	void OnTriggerEnter2D(Collider2D other)
+	{
+		if (id == 1) {
+			if (other.gameObject.layer != LayerMask.NameToLayer ("Player1")) {
+				Debug.Log ("Player 1 stuck");
+				isGlued = true;
+				Destroy (other.gameObject);
+			}
+		} else if (id == 2) {
+			if (other.gameObject.layer != LayerMask.NameToLayer ("Player2")) {
+				Destroy (other.gameObject);
+				isGlued = true;
+				Debug.Log ("Player 2 stuck");
+			}
+		} else if (id == 3) {
+			if (other.gameObject.layer != LayerMask.NameToLayer ("Player3")) {
+				Destroy (other.gameObject);
+				isGlued = true;
+				Debug.Log ("Player 3 stuck");
+			}
+		} else if (id == 4) {
+			if (other.gameObject.layer != LayerMask.NameToLayer ("Player4")) {
+				Destroy (other.gameObject);
+				isGlued = true;
+				Debug.Log ("Player 4 stuck");
+			}
+		}
+
+	}
 }
