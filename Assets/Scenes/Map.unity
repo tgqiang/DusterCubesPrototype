@@ -3974,6 +3974,11 @@ Prefab:
       value: 
       objectReference: {fileID: 21300000, guid: 9959352301d3e7a439b359b05ee330e2,
         type: 3}
+    - target: {fileID: 114836590673735568, guid: 9eb266efdf5e0ad4394c2ed2a28b0a65,
+        type: 2}
+      propertyPath: hasGlueGun
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 9eb266efdf5e0ad4394c2ed2a28b0a65, type: 2}
   m_IsPrefabParent: 0
@@ -6431,7 +6436,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1426841280629982, guid: 9eb266efdf5e0ad4394c2ed2a28b0a65, type: 2}
       propertyPath: m_Name
-      value: Player
+      value: Player2
       objectReference: {fileID: 0}
     - target: {fileID: 212649177471677754, guid: 9eb266efdf5e0ad4394c2ed2a28b0a65,
         type: 2}
@@ -6458,6 +6463,10 @@ Prefab:
         type: 2}
       propertyPath: m_Color.b
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1426841280629982, guid: 9eb266efdf5e0ad4394c2ed2a28b0a65, type: 2}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 114836590673735568, guid: 9eb266efdf5e0ad4394c2ed2a28b0a65, type: 2}
@@ -6626,6 +6635,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 423a1ef2ae16b7643a36f8e149f32388, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  BulletT: {fileID: 128968, guid: 741cd4d3c9ecebd4984f3f14f950f13e, type: 2}
+  player: {fileID: 1091643646}
+--- !u!61 &1091643651
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1091643646}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 0.5, y: 0.5}
+    newSize: {x: 0.5, y: 0.5}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.5, y: 0.5}
+  m_EdgeRadius: 0
 --- !u!1001 &1096633720
 Prefab:
   m_ObjectHideFlags: 0
@@ -8278,6 +8314,10 @@ Prefab:
         type: 2}
       propertyPath: m_Color.b
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1426841280629982, guid: 9eb266efdf5e0ad4394c2ed2a28b0a65, type: 2}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 114836590673735568, guid: 9eb266efdf5e0ad4394c2ed2a28b0a65, type: 2}
@@ -11332,11 +11372,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 423a1ef2ae16b7643a36f8e149f32388, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  BulletT: {fileID: 128968, guid: 024a609b923eddb4e98315bbadf22301, type: 2}
+  player: {fileID: 1800407211}
 --- !u!4 &1800407214 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4079164663637208, guid: 9eb266efdf5e0ad4394c2ed2a28b0a65,
     type: 2}
   m_PrefabInternal: {fileID: 1312984655}
+--- !u!61 &1800407216
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1800407211}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 0.5, y: 0.5}
+    newSize: {x: 0.5, y: 0.5}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.5, y: 0.5}
+  m_EdgeRadius: 0
 --- !u!1001 &1821404341
 Prefab:
   m_ObjectHideFlags: 0

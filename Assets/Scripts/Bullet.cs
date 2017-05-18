@@ -9,14 +9,17 @@ public class Bullet : MonoBehaviour {
 	bool isReady; //when bullet direction is set
     [SerializeField]
     int damage;
-	Vector2 Range;
+
+	public int Range = 4;
+	Vector3 startPos;
 
 
     void Awake()
 	{
 		//speed = 0.2f;
 		isReady = false;
-		//transform.position = 
+		startPos = transform.position;
+		//Debug.Log (startPos);
 	}
 
 	// Use this for initialization
@@ -29,11 +32,19 @@ public class Bullet : MonoBehaviour {
 		speed = spd;
 	}
 
+	public void setRange(int r){
+		Range = r;	
+	}
+
 	public void setDirection(Vector2 direction)
 	{
 		_direction = direction.normalized;
 
 		isReady = true;
+	}
+	public void setPosition(Vector3 pos)
+	{
+		startPos = pos;
 	}
 
 	// Update is called once per frame
@@ -45,6 +56,7 @@ public class Bullet : MonoBehaviour {
 			position += _direction * speed;
 
 			transform.position = position;
+			//Debug.Log (position);
 			//transform.LookAt(new Vector3(_direction.x,_direction.y,0));
 			// bottome-left of screen
 			Vector2 min = Camera.main.ViewportToWorldPoint (new Vector2 (0, 0));
@@ -52,8 +64,8 @@ public class Bullet : MonoBehaviour {
 			//top-right of screen
 			Vector2 max = Camera.main.ViewportToWorldPoint (new Vector2 (1, 1));
 
-			if ((transform.position.x < min.x) || (transform.position.x > max.x) ||
-				(transform.position.y < min.y) || (transform.position.y > max.y)) {
+			if ((transform.position.x < startPos.x - Range) || (transform.position.x > startPos.x + Range) ||
+				(transform.position.y < startPos.y - Range) || (transform.position.y > startPos.y + Range)) {
 
 				Destroy (gameObject);
 			}
