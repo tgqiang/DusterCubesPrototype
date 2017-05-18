@@ -51,7 +51,7 @@ public class PlayerScript : MonoBehaviour
 	*/
     void FixedUpdate()
     {
-		if (!isDead || !isGlued)
+		if (!isDead && !isGlued)
         {
 			checkTileOn ();
 			if (id == 1) {
@@ -218,12 +218,18 @@ public class PlayerScript : MonoBehaviour
 		}
 	}
 
+	public void KillPlayer() {
+		isDead = true;
+		deathText.text = deathText.text + "\nPlayer " + id + " died.";
+	}
+
 	public void EquipGlueGun() {
 		isGravGunEquipped = false;
 		isBoxingGunEquipped = false;
 		isGlueGunEquipped = true;
 		playerRenderer.sprite = glueGunEquippedSprites [direction];
 		pb.GetComponent<Gun> ().setGunType (Gun.gunType.Glue);
+		pb.GetComponent<Gun> ().playerId = id;
 	}
 
 	public void EquipGravGun() {
@@ -232,6 +238,7 @@ public class PlayerScript : MonoBehaviour
 		isGravGunEquipped = true;
 		playerRenderer.sprite = gravGunEquippedSprites [direction];
 		pb.GetComponent<Gun> ().setGunType (Gun.gunType.Grav);
+		pb.GetComponent<Gun> ().playerId = id;
 	}
 
 	public void EquipBoxingGun() {
@@ -240,6 +247,7 @@ public class PlayerScript : MonoBehaviour
 		isBoxingGunEquipped = true;
 		playerRenderer.sprite = boxingGunEquippedSprites [direction];
 		pb.GetComponent<Gun> ().setGunType (Gun.gunType.Boxing);
+		pb.GetComponent<Gun> ().playerId = id;
 	}
 
 	public void setGlued() {
