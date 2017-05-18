@@ -11,6 +11,7 @@ public class Tile : MonoBehaviour, IComparable<Tile> {
 	public bool hasGlueGun;
 	public bool hasGravGun;
 	public bool hasBoxingGun;
+	public bool hasButton;
 
 	public Sprite initial;
 	public Sprite active;
@@ -18,6 +19,7 @@ public class Tile : MonoBehaviour, IComparable<Tile> {
 	public Sprite glueGunSpawned;
 	public Sprite gravGunSpawned;
 	public Sprite boxingGunSpawned;
+	public Sprite buttonSpawned;
 	public SpriteRenderer tileRenderer;
 
 	// Use this for initialization
@@ -33,18 +35,17 @@ public class Tile : MonoBehaviour, IComparable<Tile> {
 	void Update ()
 	{
 		if (isDestroyed) {
-			// TODO: set tile to red (unsteppable)
 			tileRenderer.sprite = destroyed;
 		} else if (isStepped) {
-			// TODO: set tile to white color
 			tileRenderer.sprite = active;
 		} else if (hasGlueGun) {
 			tileRenderer.sprite = glueGunSpawned;
 		} else if (hasGravGun) {
 			tileRenderer.sprite = gravGunSpawned;
 		} else if (hasBoxingGun) {
-			// TODO: add placeholder sprites
 			tileRenderer.sprite = boxingGunSpawned;
+		} else if (hasButton) {
+			tileRenderer.sprite = buttonSpawned;
 		} else {
 			tileRenderer.sprite = initial;
 		}
@@ -57,25 +58,37 @@ public class Tile : MonoBehaviour, IComparable<Tile> {
 			hasGravGun = false;
 		} else if (hasBoxingGun) {
 			hasBoxingGun = false;
+		} else if (hasButton) {
+			hasButton = false;
 		}
 	}
 
 	public void SpawnGlueGun() {
 		hasGravGun = false;
 		hasBoxingGun = false;
+		hasButton = false;
 		hasGlueGun = true;
 	}
 
 	public void SpawnGravGun() {
 		hasBoxingGun = false;
 		hasGlueGun = false;
+		hasButton = false;
 		hasGravGun = true;
 	}
 
 	public void SpawnBoxingGun() {
 		hasGlueGun = false;
 		hasGravGun = false;
+		hasButton = false;
 		hasBoxingGun = true;
+	}
+
+	public void SpawnButton() {
+		hasGlueGun = false;
+		hasGravGun = false;
+		hasBoxingGun = false;
+		hasButton = true;
 	}
 
 	public int CompareTo(Tile other) {
