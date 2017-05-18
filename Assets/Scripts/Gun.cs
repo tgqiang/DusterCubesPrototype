@@ -24,6 +24,9 @@ public class Gun : MonoBehaviour {
 	public SpriteRenderer gravityColRenderer;
 
 	int counter;
+	int gravityCounter;
+	public int gravityCd;
+	public int pushStrength;
 
 	gunType currentHoldingGun;
 	public GameObject BulletT;
@@ -38,6 +41,10 @@ public class Gun : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
+		if (gravityCounter > 0) {
+			gravityCounter -= 1;
+		}
+
 		if (counter > 0) {
 			counter -= 1;
 		}
@@ -142,123 +149,125 @@ public class Gun : MonoBehaviour {
 	}
 
 	public void TriggerGravityGun(int direction) {
-		print (transform.position);
-		Vector2 pos = transform.position;
+		if (gravityCounter <= 0) {
+			print (transform.position);
+			Vector2 pos = transform.position;
 
-		switch (direction) {
-		case 0: //up
+			switch (direction) {
+			case 0: //up
 			//Debug.Log ("Grav Gun Effect Top-face");
-			if (toPull) {
-				gravityColRenderer.sprite = gravityCols [1];
-			}
+				if (toPull) {
+					gravityColRenderer.sprite = gravityCols [1];
+				}
 
-			pos.y = 0;
-			gravityColRenderer.transform.position = pos;
-			triggerGravityCol = true;
-			triggerGravityRow = false;
-			break;
-		case 1: //down
+				pos.y = 0;
+				gravityColRenderer.transform.position = pos;
+				triggerGravityCol = true;
+				triggerGravityRow = false;
+				break;
+			case 1: //down
 			//Debug.Log ("Grav Gun Effect Down-face");
-			if (toPull) {
-				gravityColRenderer.sprite = gravityCols [0];
-			}
+				if (toPull) {
+					gravityColRenderer.sprite = gravityCols [0];
+				}
 
-			pos.y = 0;
-			gravityColRenderer.transform.position = pos;
-			triggerGravityCol = true;
-			triggerGravityRow = false;
-			break;
-		case 2: //left
+				pos.y = 0;
+				gravityColRenderer.transform.position = pos;
+				triggerGravityCol = true;
+				triggerGravityRow = false;
+				break;
+			case 2: //left
 			//Debug.Log ("Grav Gun Effect Left-face");
-			if (toPull) {
-				gravityRowRenderer.sprite = gravityRows [1];
-			}
+				if (toPull) {
+					gravityRowRenderer.sprite = gravityRows [1];
+				}
 
-			pos.x = 0;
-			gravityRowRenderer.transform.position = pos;
-			triggerGravityRow = true;
-			triggerGravityCol = false;
-			break;
-		case 3: //right
+				pos.x = 0;
+				gravityRowRenderer.transform.position = pos;
+				triggerGravityRow = true;
+				triggerGravityCol = false;
+				break;
+			case 3: //right
 			//Debug.Log ("Grav Gun Effect Right-face");
-			if (toPull) {
-				gravityRowRenderer.sprite = gravityRows [0];
+				if (toPull) {
+					gravityRowRenderer.sprite = gravityRows [0];
+				}
+
+				pos.x = 0;
+				gravityRowRenderer.transform.position = pos;
+				triggerGravityRow = true;
+				triggerGravityCol = false;
+				break;
 			}
 
-			pos.x = 0;
-			gravityRowRenderer.transform.position = pos;
-			triggerGravityRow = true;
-			triggerGravityCol = false;
-			break;
-		}
+			if (triggerGravityRow) {
+				gravityRowRenderer.enabled = true;
+			} else if (triggerGravityCol) {
+				gravityColRenderer.enabled = true;
+			} else {
+				gravityRowRenderer.enabled = false;
+				gravityColRenderer.enabled = false;
+			}
 
-		if (triggerGravityRow) {
-			gravityRowRenderer.enabled = true;
-		} else if (triggerGravityCol) {
-			gravityColRenderer.enabled = true;
-		} else {
-			gravityRowRenderer.enabled = false;
-			gravityColRenderer.enabled = false;
-		}
+			GameObject[] players = GameObject.FindGameObjectsWithTag ("Player");
+			GameObject self = GameObject.Find ("Player " + playerId);
 
-		GameObject[] players = GameObject.FindGameObjectsWithTag ("Player");
-		GameObject self = GameObject.Find ("Player " + playerId);
-
-		for (int i = 0; i < players.Length; i++) {
-			if (players [i].GetComponent<PlayerScript> ().id != playerId) {
-				if (players [i].GetComponent<Transform> ().position.y == gravityRowRenderer.transform.position.y) { // ROW
-					if (direction == 2 && players [i].GetComponent<Transform> ().position.x <= self.transform.position.x) { // self facing left
-						// move his ass along x axis
-						if (toPull) {
-							players [i].GetComponent<Transform> ().position += Vector3.right * 3;
-						} else {
-							players [i].GetComponent<Transform> ().position += Vector3.left * 3;
+			for (int i = 0; i < players.Length; i++) {
+				if (players [i].GetComponent<PlayerScript> ().id != playerId) {
+					if (players [i].GetComponent<Transform> ().position.y == gravityRowRenderer.transform.position.y) { // ROW
+						if (direction == 2 && players [i].GetComponent<Transform> ().position.x <= self.transform.position.x) { // self facing left
+							// move his ass along x axis
+							if (toPull) {
+								players [i].GetComponent<Transform> ().position += Vector3.right * pushStrength;
+							} else {
+								players [i].GetComponent<Transform> ().position += Vector3.left * pushStrength;
+							}
+							if (Mathf.Abs (players [i].GetComponent<Transform> ().position.x) > 4.5 ||
+							   Mathf.Abs (players [i].GetComponent<Transform> ().position.y) > 4.5) {
+								players [i].GetComponent<PlayerScript> ().KillPlayer ();
+							}
+						} else if (direction == 3 && players [i].GetComponent<Transform> ().position.x >= self.transform.position.x) { // self facing right
+							// move his ass along x axis
+							if (toPull) {
+								players [i].GetComponent<Transform> ().position += Vector3.left * pushStrength;
+							} else {
+								players [i].GetComponent<Transform> ().position += Vector3.right * pushStrength;
+							}
+							if (Mathf.Abs (players [i].GetComponent<Transform> ().position.x) > 4.5 ||
+							   Mathf.Abs (players [i].GetComponent<Transform> ().position.y) > 4.5) {
+								players [i].GetComponent<PlayerScript> ().KillPlayer ();
+							}
 						}
-						if (Mathf.Abs (players [i].GetComponent<Transform> ().position.x) > 4.5 ||
-							Mathf.Abs (players [i].GetComponent<Transform> ().position.y) > 4.5) {
-							players [i].GetComponent<PlayerScript> ().KillPlayer ();
-						}
-					} else if (direction == 3 && players [i].GetComponent<Transform> ().position.x >= self.transform.position.x) { // self facing right
-						// move his ass along x axis
-						if (toPull) {
-							players [i].GetComponent<Transform> ().position += Vector3.left * 3;
-						} else {
-							players [i].GetComponent<Transform> ().position += Vector3.right * 3;
-						}
-						if (Mathf.Abs (players [i].GetComponent<Transform> ().position.x) > 4.5 ||
-							Mathf.Abs (players [i].GetComponent<Transform> ().position.y) > 4.5) {
-							players [i].GetComponent<PlayerScript> ().KillPlayer ();
+					} else if (players [i].GetComponent<Transform> ().position.x == gravityColRenderer.transform.position.x) { // COLUMN
+						if (direction == 0 && players [i].GetComponent<Transform> ().position.y >= self.transform.position.y) { // self facing up
+							// move his ass along y axis
+							if (toPull) {
+								players [i].GetComponent<Transform> ().position += Vector3.down * pushStrength;
+							} else {
+								players [i].GetComponent<Transform> ().position += Vector3.up * pushStrength;
+							}
+							if (Mathf.Abs (players [i].GetComponent<Transform> ().position.x) > 4.5 ||
+							   Mathf.Abs (players [i].GetComponent<Transform> ().position.y) > 4.5) {
+								players [i].GetComponent<PlayerScript> ().KillPlayer ();
+							}
+						} else if (direction == 1 && players [i].GetComponent<Transform> ().position.y <= self.transform.position.y) { // self facing down
+							// move his ass along y axis
+							if (toPull) {
+								players [i].GetComponent<Transform> ().position += Vector3.up * pushStrength;
+							} else {
+								players [i].GetComponent<Transform> ().position += Vector3.down * pushStrength;
+							}
+							if (Mathf.Abs (players [i].GetComponent<Transform> ().position.x) > 4.5 ||
+							   Mathf.Abs (players [i].GetComponent<Transform> ().position.y) > 4.5) {
+								players [i].GetComponent<PlayerScript> ().KillPlayer ();
+							}
 						}
 					}
 				}
-				else if (players [i].GetComponent<Transform> ().position.x == gravityColRenderer.transform.position.x) { // COLUMN
-					if (direction == 0 && players [i].GetComponent<Transform> ().position.y >= self.transform.position.y) { // self facing up
-						// move his ass along y axis
-						if (toPull) {
-							players [i].GetComponent<Transform> ().position += Vector3.down * 3;
-						} else {
-							players [i].GetComponent<Transform> ().position += Vector3.up * 3;
-						}
-						if (Mathf.Abs (players [i].GetComponent<Transform> ().position.x) > 4.5 ||
-							Mathf.Abs (players [i].GetComponent<Transform> ().position.y) > 4.5) {
-							players [i].GetComponent<PlayerScript> ().KillPlayer ();
-						}
-					} else if (direction == 1 && players [i].GetComponent<Transform> ().position.y <= self.transform.position.y) { // self facing down
-						// move his ass along y axis
-						if (toPull) {
-							players [i].GetComponent<Transform> ().position += Vector3.up * 3;
-						} else {
-							players [i].GetComponent<Transform> ().position += Vector3.down * 3;
-						}
-						if (Mathf.Abs (players [i].GetComponent<Transform> ().position.x) > 4.5 ||
-							Mathf.Abs (players [i].GetComponent<Transform> ().position.y) > 4.5) {
-							players [i].GetComponent<PlayerScript> ().KillPlayer ();
-						}
-					}
-				}
 			}
-		}
 
-		counter = 20;
+			gravityCounter = gravityCd;
+			counter = 20;
+		}
 	}
 }

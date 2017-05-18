@@ -60,6 +60,7 @@ public class Tile : MonoBehaviour, IComparable<Tile> {
 			hasBoxingGun = false;
 		} else if (hasButton) {
 			hasButton = false;
+			GameObject.Find ("GameManager").GetComponent<GameManagerScript> ().TriggerDestruction ();
 		}
 	}
 

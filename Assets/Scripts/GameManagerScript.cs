@@ -44,12 +44,24 @@ public class GameManagerScript : MonoBehaviour {
 	bool destroyedEarlier;
 	bool isGameOver;
 
+	float rowCounter;
+	float colCounter;
+
+	int weaponSpawnCounter;
+	public int weaponInterval;
+
+	int buttonX;
+	int buttonY;
+
 	// Use this for initialization
 	void Start () {
 		timeElapsed = 0;
 		winText.enabled = false;
 		startDestroying = 20;
 		startWarning = 18;
+
+		rowCounter = 0;
+		colCounter = 0;
 
 		// Set-up the game tiles
 		GameObject[] tileObjects = GameObject.FindGameObjectsWithTag ("Tile");
@@ -73,6 +85,76 @@ public class GameManagerScript : MonoBehaviour {
 		colWarningRenderer = colWarning.GetComponent<SpriteRenderer>();
 	}
 
+	void Update() {
+		weaponSpawnCounter += 1;
+
+		rowCounter += 0.2f;
+		colCounter += 0.2f;
+		Vector3 rowWarningPos = rowWarning.transform.position;
+		rowWarningPos.y = (4.5f - (Mathf.FloorToInt(rowCounter) % rowsRemaining));
+		rowWarning.transform.position = rowWarningPos;
+
+		Vector3 colWarningPos = colWarning.transform.position;
+		colWarningPos.x = (-4.5f + (Mathf.FloorToInt(colCounter) % colsRemaining));
+		colWarning.transform.position = colWarningPos;
+
+		if (weaponSpawnCounter % weaponInterval == 0) {
+			SpawnRandomWeapons ();
+		}
+	}
+
+	public void TriggerDestruction() {
+		toDestroyRow = UnityEngine.Random.Range (0, 1);
+		rowToDestroy = Mathf.FloorToInt (rowCounter) % rowsRemaining;
+		colToDestroy = Mathf.FloorToInt (colCounter) % colsRemaining;
+		StartCoroutine (DestroySetsOfTiles ());
+	}
+
+	public void SpawnRandomWeapons() {
+		int tile1x = UnityEngine.Random.Range (0, colsRemaining);
+		int tile1y = UnityEngine.Random.Range (0, rowsRemaining);
+
+		int tile2x = UnityEngine.Random.Range (0, colsRemaining);
+		int tile2y = UnityEngine.Random.Range (0, rowsRemaining);
+
+		int tile3x = UnityEngine.Random.Range (0, colsRemaining);
+		int tile3y = UnityEngine.Random.Range (0, rowsRemaining);
+
+		// 0: glue gun
+		// 1: gravity gun
+		// 2: boxing gun
+		int weapon1 = UnityEngine.Random.Range (0, 2);
+		int weapon2 = UnityEngine.Random.Range (0, 2);
+		switch (weapon1) {
+		case 0:
+			map [tile1x, tile1y].SpawnGlueGun ();
+			break;
+		case 1:
+			map [tile1x, tile1y].SpawnGravGun ();
+			break;
+		case 2:
+			map [tile1x, tile1y].SpawnBoxingGun ();
+			break;
+		}
+		switch (weapon2) {
+		case 0:
+			map [tile2x, tile2y].SpawnGlueGun ();
+			break;
+		case 1:
+			map [tile2x, tile2y].SpawnGravGun ();
+			break;
+		case 2:
+			map [tile2x, tile2y].SpawnBoxingGun ();
+			break;
+		}
+
+		map [buttonX, buttonY].hasButton = false;
+		map [tile3x, tile3y].SpawnButton ();
+		buttonX = tile3x;
+		buttonY = tile3y;
+
+	}
+
 	void FixedUpdate() {
 		// print ("[" + startDestroying + ", " + intervals[count] + ", " + startWarning + "]");
 		//print ((Mathf.FloorToInt (timeElapsed) % 20) == (startDestroying % 20));
@@ -83,6 +165,7 @@ public class GameManagerScript : MonoBehaviour {
 			winText.enabled = true;
 		}
 		// else if warning should begin
+		/*
 		else if (Mathf.FloorToInt(timeElapsed) % 20 == startWarning && !isWarned) {
 			print ("Warning begins.");
 			isWarned = true;
@@ -95,7 +178,9 @@ public class GameManagerScript : MonoBehaviour {
 				rowWarning.transform.position = new Vector2 (0, 4.5f - rowToDestroy);
 			}
 		}
+		*/
 		// for animating the warning before destruction occurs
+		/*
 		else if (Mathf.FloorToInt(timeElapsed) % 20 >= startWarning && Mathf.FloorToInt(timeElapsed) % 20 < startDestroying) {
 			int index;
 
@@ -111,8 +196,9 @@ public class GameManagerScript : MonoBehaviour {
 				index = Mathf.FloorToInt ((Time.time * 60)) % rowWarningFrame.Length;
 				rowWarningRenderer.sprite = rowWarningFrame [index];
 			}
-		}
+		}*/
 		// else if it is time to destroy row/column of tiles
+		/*
 		else if (Mathf.FloorToInt(timeElapsed) > 0 && ((Mathf.FloorToInt(timeElapsed) % 20) == (startDestroying % 20)) && !destroyedEarlier) {
 			print ("Destruction begins.");
 			rowWarningRenderer.enabled = false;
@@ -124,11 +210,14 @@ public class GameManagerScript : MonoBehaviour {
 			startWarning = startDestroying - intervals[count];
 			StartCoroutine (DestroySetsOfTiles ());
 		}
+		*/
 		// else if destruction phase is over
+		/*
 		else {
 			//print ("Destruction ends.");
 			destroyedEarlier = false;
 		}
+		*/
 	}
 
 	// LateUpdate is used to permit execution of other critical player/environment actions
