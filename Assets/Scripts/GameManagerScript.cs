@@ -50,6 +50,11 @@ public class GameManagerScript : MonoBehaviour {
 	int weaponSpawnCounter;
 	public int weaponInterval;
 
+	int weapon1x;
+	int weapon1y;
+	int weapon2x;
+	int weapon2y;
+
 	int buttonX;
 	int buttonY;
 
@@ -148,11 +153,23 @@ public class GameManagerScript : MonoBehaviour {
 			break;
 		}
 
+		map [weapon1x, weapon1y].hasGlueGun = false;
+		map [weapon1x, weapon1y].hasGravGun = false;
+		map [weapon1x, weapon1y].hasBoxingGun = false;
+
+		map [weapon2x, weapon2y].hasGlueGun = false;
+		map [weapon2x, weapon2y].hasGravGun = false;
+		map [weapon2x, weapon2y].hasBoxingGun = false;
+
 		map [buttonX, buttonY].hasButton = false;
 		map [tile3x, tile3y].SpawnButton ();
 		buttonX = tile3x;
 		buttonY = tile3y;
 
+		weapon1x = tile1x;
+		weapon1y = tile1y;
+		weapon2x = tile2x;
+		weapon2y = tile2y;
 	}
 
 	void FixedUpdate() {

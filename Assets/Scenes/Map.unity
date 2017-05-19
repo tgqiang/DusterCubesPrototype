@@ -233,6 +233,16 @@ Prefab:
         type: 3}
     - target: {fileID: 114836590673735568, guid: 9eb266efdf5e0ad4394c2ed2a28b0a65,
         type: 2}
+      propertyPath: hasGlueGun
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114836590673735568, guid: 9eb266efdf5e0ad4394c2ed2a28b0a65,
+        type: 2}
+      propertyPath: hasGravGun
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114836590673735568, guid: 9eb266efdf5e0ad4394c2ed2a28b0a65,
+        type: 2}
       propertyPath: boxingGunSpawned
       value: 
       objectReference: {fileID: 21300000, guid: e6c3952230c915a4ba53d0943cd87668,
@@ -1058,11 +1068,6 @@ Prefab:
       value: 
       objectReference: {fileID: 21300000, guid: 7560907545de9884a9db0769eec3b4f0,
         type: 3}
-    - target: {fileID: 114836590673735568, guid: 9eb266efdf5e0ad4394c2ed2a28b0a65,
-        type: 2}
-      propertyPath: hasGravGun
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 114836590673735568, guid: 9eb266efdf5e0ad4394c2ed2a28b0a65,
         type: 2}
       propertyPath: boxingGunSpawned
@@ -2789,6 +2794,16 @@ Prefab:
         type: 3}
     - target: {fileID: 114836590673735568, guid: 9eb266efdf5e0ad4394c2ed2a28b0a65,
         type: 2}
+      propertyPath: hasGravGun
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114836590673735568, guid: 9eb266efdf5e0ad4394c2ed2a28b0a65,
+        type: 2}
+      propertyPath: hasBoxingGun
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114836590673735568, guid: 9eb266efdf5e0ad4394c2ed2a28b0a65,
+        type: 2}
       propertyPath: boxingGunSpawned
       value: 
       objectReference: {fileID: 21300000, guid: e6c3952230c915a4ba53d0943cd87668,
@@ -4185,11 +4200,6 @@ Prefab:
       value: 
       objectReference: {fileID: 21300000, guid: 7560907545de9884a9db0769eec3b4f0,
         type: 3}
-    - target: {fileID: 114836590673735568, guid: 9eb266efdf5e0ad4394c2ed2a28b0a65,
-        type: 2}
-      propertyPath: hasGravGun
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 114836590673735568, guid: 9eb266efdf5e0ad4394c2ed2a28b0a65,
         type: 2}
       propertyPath: boxingGunSpawned
@@ -6337,6 +6347,11 @@ Prefab:
         type: 3}
     - target: {fileID: 114836590673735568, guid: 9eb266efdf5e0ad4394c2ed2a28b0a65,
         type: 2}
+      propertyPath: hasGlueGun
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114836590673735568, guid: 9eb266efdf5e0ad4394c2ed2a28b0a65,
+        type: 2}
       propertyPath: boxingGunSpawned
       value: 
       objectReference: {fileID: 21300000, guid: e6c3952230c915a4ba53d0943cd87668,
@@ -6472,11 +6487,6 @@ Prefab:
       value: 
       objectReference: {fileID: 21300000, guid: 7560907545de9884a9db0769eec3b4f0,
         type: 3}
-    - target: {fileID: 114836590673735568, guid: 9eb266efdf5e0ad4394c2ed2a28b0a65,
-        type: 2}
-      propertyPath: hasBoxingGun
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 114836590673735568, guid: 9eb266efdf5e0ad4394c2ed2a28b0a65,
         type: 2}
       propertyPath: boxingGunSpawned
@@ -7164,6 +7174,11 @@ Prefab:
         type: 3}
     - target: {fileID: 114836590673735568, guid: 9eb266efdf5e0ad4394c2ed2a28b0a65,
         type: 2}
+      propertyPath: hasBoxingGun
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114836590673735568, guid: 9eb266efdf5e0ad4394c2ed2a28b0a65,
+        type: 2}
       propertyPath: boxingGunSpawned
       value: 
       objectReference: {fileID: 21300000, guid: e6c3952230c915a4ba53d0943cd87668,
@@ -7453,6 +7468,7 @@ MonoBehaviour:
   offsetX: 0
   offsetY: 0
   direction: -1
+  stunDuration: 0
   isGlueGunEquipped: 0
   isGravGunEquipped: 0
   isBoxingGunEquipped: 0
@@ -7473,6 +7489,8 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 2f72c5af664408a40889ba537d86778a, type: 3}
   - {fileID: 21300000, guid: c39d65b50f051f74f81d1a2d4ce4cd09, type: 3}
   - {fileID: 21300000, guid: e7d13cffdf935da4dafb7ff68937907a, type: 3}
+  stunned: {fileID: 21300000, guid: c4bbfcc0b8ed2b74da3b98ea22ea4968, type: 3}
+  glued: {fileID: 21300000, guid: 401f53082cd036b4eadbcb3adad5a399, type: 3}
   gameManager: {fileID: 2134181962}
 --- !u!114 &1091643649
 MonoBehaviour:
@@ -7498,9 +7516,10 @@ MonoBehaviour:
   - {fileID: 21300000, guid: d8c782bee30b2c24dbc84320537a2319, type: 3}
   gravityRowRenderer: {fileID: 581989063}
   gravityColRenderer: {fileID: 656652790}
-  gravityCd: 100
+  gravityCd: 150
   pushStrength: 3
-  BulletT: {fileID: 128968, guid: 741cd4d3c9ecebd4984f3f14f950f13e, type: 2}
+  BulletGlue: {fileID: 128968, guid: 741cd4d3c9ecebd4984f3f14f950f13e, type: 2}
+  BulletBox: {fileID: 0}
   player: {fileID: 1091643646}
 --- !u!61 &1091643650
 BoxCollider2D:
@@ -7650,11 +7669,6 @@ Prefab:
       value: 
       objectReference: {fileID: 21300000, guid: 7560907545de9884a9db0769eec3b4f0,
         type: 3}
-    - target: {fileID: 114836590673735568, guid: 9eb266efdf5e0ad4394c2ed2a28b0a65,
-        type: 2}
-      propertyPath: hasGlueGun
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 114836590673735568, guid: 9eb266efdf5e0ad4394c2ed2a28b0a65,
         type: 2}
       propertyPath: boxingGunSpawned
@@ -8203,6 +8217,11 @@ Prefab:
       value: 
       objectReference: {fileID: 21300000, guid: 7560907545de9884a9db0769eec3b4f0,
         type: 3}
+    - target: {fileID: 114836590673735568, guid: 9eb266efdf5e0ad4394c2ed2a28b0a65,
+        type: 2}
+      propertyPath: hasGravGun
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 114836590673735568, guid: 9eb266efdf5e0ad4394c2ed2a28b0a65,
         type: 2}
       propertyPath: boxingGunSpawned
@@ -9333,6 +9352,11 @@ Prefab:
       propertyPath: m_TagString
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 212649177471677754, guid: 9eb266efdf5e0ad4394c2ed2a28b0a65,
+        type: 2}
+      propertyPath: m_Color.a
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 114836590673735568, guid: 9eb266efdf5e0ad4394c2ed2a28b0a65, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 9eb266efdf5e0ad4394c2ed2a28b0a65, type: 2}
@@ -9734,11 +9758,6 @@ Prefab:
       value: 
       objectReference: {fileID: 21300000, guid: 7560907545de9884a9db0769eec3b4f0,
         type: 3}
-    - target: {fileID: 114836590673735568, guid: 9eb266efdf5e0ad4394c2ed2a28b0a65,
-        type: 2}
-      propertyPath: hasBoxingGun
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 114836590673735568, guid: 9eb266efdf5e0ad4394c2ed2a28b0a65,
         type: 2}
       propertyPath: boxingGunSpawned
@@ -11938,6 +11957,11 @@ Prefab:
         type: 3}
     - target: {fileID: 114836590673735568, guid: 9eb266efdf5e0ad4394c2ed2a28b0a65,
         type: 2}
+      propertyPath: hasGlueGun
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114836590673735568, guid: 9eb266efdf5e0ad4394c2ed2a28b0a65,
+        type: 2}
       propertyPath: boxingGunSpawned
       value: 
       objectReference: {fileID: 21300000, guid: e6c3952230c915a4ba53d0943cd87668,
@@ -12628,6 +12652,7 @@ MonoBehaviour:
   offsetX: 0
   offsetY: 0
   direction: -1
+  stunDuration: 0
   isGlueGunEquipped: 0
   isGravGunEquipped: 0
   isBoxingGunEquipped: 0
@@ -12648,6 +12673,8 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 33a53553a2559e141bbe70b7ac3249c3, type: 3}
   - {fileID: 21300000, guid: 585025ec8d619f6409b23406d07b24e1, type: 3}
   - {fileID: 21300000, guid: 766b8c425edbb09458cec000ba443c01, type: 3}
+  stunned: {fileID: 21300000, guid: 66015811ac8c3774fb9478767fd35c90, type: 3}
+  glued: {fileID: 21300000, guid: 29dd8ed87e9b8184eb5b0f35ea946f89, type: 3}
   gameManager: {fileID: 2134181962}
 --- !u!114 &1800407213
 MonoBehaviour:
@@ -12673,9 +12700,10 @@ MonoBehaviour:
   - {fileID: 21300000, guid: d8c782bee30b2c24dbc84320537a2319, type: 3}
   gravityRowRenderer: {fileID: 215055730}
   gravityColRenderer: {fileID: 792462184}
-  gravityCd: 100
+  gravityCd: 150
   pushStrength: 3
-  BulletT: {fileID: 128968, guid: 024a609b923eddb4e98315bbadf22301, type: 2}
+  BulletGlue: {fileID: 128968, guid: 024a609b923eddb4e98315bbadf22301, type: 2}
+  BulletBox: {fileID: 0}
   player: {fileID: 1800407211}
 --- !u!4 &1800407214 stripped
 Transform:
@@ -12967,11 +12995,6 @@ Prefab:
       value: 
       objectReference: {fileID: 21300000, guid: 7560907545de9884a9db0769eec3b4f0,
         type: 3}
-    - target: {fileID: 114836590673735568, guid: 9eb266efdf5e0ad4394c2ed2a28b0a65,
-        type: 2}
-      propertyPath: hasGlueGun
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 114836590673735568, guid: 9eb266efdf5e0ad4394c2ed2a28b0a65,
         type: 2}
       propertyPath: boxingGunSpawned
